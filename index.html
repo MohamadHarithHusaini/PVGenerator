@@ -58,37 +58,124 @@
   .totalbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fafbfc;border:1px solid var(--line);border-radius:8px;font-weight:800;font-size:15px;margin-top:4px}
   .totalbar .total-amt{color:var(--brand);font-size:17px}
 
-  /* item cards (replace the old table rows so 5 upload slots fit cleanly) */
-  .itemcard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:#fff}
+  /* ============ collapsible item cards (accordion) ============ */
+  .itemcard{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:#fff;overflow:hidden}
   .itemcard.mandatory-missing{border-color:#f0c36d}
-  .itemtop{display:flex;align-items:flex-end;gap:12px;margin-bottom:4px}
-  .itemnum{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--brand-2),var(--teal));color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;margin-bottom:9px}
+
+  .acchead{display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;user-select:none;transition:.12s}
+  .acchead:hover{background:#f7f9fb}
+  .accarrow{flex:0 0 auto;color:var(--muted);font-size:11px;transition:transform .15s}
+  .itemcard.open .accarrow{transform:rotate(90deg)}
+  .itemnum{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--brand-2),var(--teal));color:#fff;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center}
+  .sum-adj{flex:1 1 auto;min-width:0;font-weight:700;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sum-adj.empty{color:var(--muted);font-weight:600;font-style:italic}
+  .sum-amt{flex:0 0 auto;font-weight:800;font-size:13px;color:var(--brand)}
+  .sum-amt.empty{color:var(--muted);font-weight:600}
+  .sum-due{flex:0 0 auto;font-size:12px;font-weight:600;color:var(--ink);background:#f1f3f6;border-radius:20px;padding:3px 10px}
+  .sum-due.warn{background:#fdecec;color:var(--danger)}
+  .sum-docs{flex:0 0 auto;font-size:11.5px;font-weight:600;color:var(--muted);background:#f1f3f6;border-radius:20px;padding:3px 10px}
+  .sum-docs.complete{background:var(--teal-tint);color:var(--teal-dark)}
+  .sum-docs b{font-weight:800}
+  .removeline{flex:0 0 auto;background:transparent;border:1px solid transparent;color:var(--muted);font-weight:700;font-size:13px;width:26px;height:26px;border-radius:6px;cursor:pointer;line-height:1}
+  .removeline:hover{background:#fdecec;border-color:var(--danger);color:var(--danger)}
+
+  .accbody{display:none;padding:2px 14px 14px 14px;border-top:1px solid var(--line)}
+  .itemcard.open .accbody{display:block}
+
+  .itemtop{display:flex;align-items:flex-end;gap:12px;margin:12px 0 4px}
   .field{display:flex;flex-direction:column;gap:4px;flex:1 1 auto;min-width:0}
   .field.narrow{flex:0 0 140px}
   .field label{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
   .field input{width:100%}
 
-  .cardbody{display:grid;grid-template-columns:1.15fr 1fr auto;gap:14px;margin-top:12px;align-items:stretch}
-  .doclist{display:flex;flex-direction:column;gap:7px}
-  .docslot{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;background:#fafbfc;transition:.15s}
-  .docslot.filled{border-color:var(--teal);background:var(--teal-tint)}
-  .docicon{flex:0 0 auto;font-size:15px;line-height:1}
-  .doclabel{flex:1 1 auto;font-weight:700;color:var(--ink)}
-  .doclabel.req::after{content:' *';color:var(--danger);font-weight:800}
-  .doc-name{flex:0 0 auto;max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:11.5px;font-weight:600}
-  .docslot.filled .doc-name{color:var(--teal-dark);font-weight:700}
+  /* compact single-row upload strip */
+  .uploadstrip{position:relative;display:flex;align-items:center;gap:10px;margin-top:12px;padding:10px 12px;border:1.5px dashed var(--brand-2);border-radius:9px;background:var(--accent);cursor:pointer;transition:.15s}
+  .uploadstrip:hover{background:#dceafb;border-color:var(--brand)}
+  .us-icon{font-size:15px;color:var(--brand-2)}
+  .us-text{flex:1 1 auto;font-size:12.5px;font-weight:700;color:var(--brand)}
+  .us-cta{flex:0 0 auto;font-size:11.5px;font-weight:800;color:#fff;background:var(--brand-2);padding:4px 12px;border-radius:20px}
+  .uploadstrip input{position:absolute;inset:0;opacity:0;cursor:pointer}
 
-  .uploadzone-wrap{display:flex}
-  .uploadzone{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:2px dashed var(--brand-2);border-radius:12px;background:var(--accent);cursor:pointer;padding:14px 10px;text-align:center;transition:.15s;position:relative}
-  .uploadzone:hover{background:#dceafb;border-color:var(--brand)}
-  .uploadzone-icon{font-size:22px;color:var(--brand-2)}
-  .uploadzone-title{font-weight:800;font-size:13.5px;color:var(--brand)}
-  .uploadzone-sub{font-size:11px;color:var(--muted)}
+  /* compact document status table */
+  .doctable{width:100%;border-collapse:collapse;margin-top:10px}
+  .doctable td{padding:6px 8px;font-size:12.5px;border-bottom:1px solid var(--line);vertical-align:middle}
+  .doctable tr:last-child td{border-bottom:none}
+  .dt-icon{width:26px;font-size:14px}
+  .dt-label{font-weight:700;color:var(--ink);white-space:nowrap}
+  .dt-label.req::after{content:' *';color:var(--danger);font-weight:800}
+  .dt-name{color:var(--muted);font-size:11.5px;font-weight:600;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:340px;width:45%}
+  .docslot.filled .dt-name{color:var(--teal-dark);font-weight:700}
+  .docslot.filled .dt-icon{filter:none}
+  .docslot.filled td{background:var(--teal-tint)}
+
+  /* ============ sticky details bar ============ */
+  .stickybar{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);margin-bottom:16px}
+  .stickyinner{display:flex;align-items:flex-end;gap:14px;padding:12px 16px;flex-wrap:wrap}
+  .sfield{display:flex;flex-direction:column;gap:4px;flex:1 1 180px;min-width:0}
+  .sfield.wide{flex:1.4 1 220px}
+  .sfield label{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  .stickytotal{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:2px;padding-left:14px;border-left:1px solid var(--line)}
+  .stickytotal .lbl{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  .stickytotal .total-amt{font-weight:800;font-size:17px;color:var(--brand)}
+
+  /* ============ floating tool switcher ============ */
+  .toolswitch{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:60}
+  .switchtoggle{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(135deg,var(--brand-2),var(--teal));color:#fff;font-size:19px;box-shadow:0 3px 12px rgba(13,58,99,.35);transition:.15s}
+  .switchtoggle:hover{transform:scale(1.06)}
+  .switchmenu{position:absolute;right:56px;top:50%;transform:translateY(-50%) scale(.95);transform-origin:right center;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 26px rgba(16,24,40,.18);padding:6px;display:none;min-width:236px}
+  .toolswitch.open .switchmenu{display:block;animation:popin .13s ease-out forwards}
+  @keyframes popin{to{transform:translateY(-50%) scale(1)}}
+  .switchopt{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;text-align:left;padding:9px 10px;border-radius:8px;cursor:pointer;font-family:inherit}
+  .switchopt:hover{background:var(--accent)}
+  .switchopt.active{background:var(--teal-tint)}
+  .optIcon{font-size:18px}
+  .optText b{display:block;font-size:13px;color:var(--ink)}
+  .optText small{display:block;font-size:11px;color:var(--muted)}
+
+  /* ============ floating action bar ============ */
+  .actionbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.97);backdrop-filter:blur(6px);border-top:1px solid var(--line);box-shadow:0 -2px 12px rgba(16,24,40,.07);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 22px;flex-wrap:wrap}
+  .actionbtns{display:flex;gap:9px;flex-wrap:wrap}
+  .filelabel{position:relative;overflow:hidden}
+  .filelabel input{position:absolute;inset:0;opacity:0;cursor:pointer}
+  body{padding-bottom:74px}
+
+  /* ============ PDF page swap view ============ */
+  .swapintro{margin:0 0 14px;color:var(--muted);font-size:13.5px}
+  .uploadzone{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:2px dashed var(--brand-2);border-radius:12px;background:var(--accent);cursor:pointer;padding:34px 18px;text-align:center;transition:.15s}
+  .uploadzone:hover,.uploadzone.drag{background:#dceafb;border-color:var(--brand)}
+  .uploadzone-icon{font-size:24px;color:var(--brand-2)}
+  .uploadzone-title{font-weight:800;font-size:14px;color:var(--brand)}
+  .uploadzone-sub{font-size:11.5px;color:var(--muted)}
   .uploadzone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .filelist{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .filechip{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:9px;padding:9px 12px;background:#fafbfc;font-size:12.5px}
+  .filechip .name{flex:1 1 auto;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .filechip .pages{flex:0 0 auto;color:var(--muted);font-size:11.5px;font-weight:600}
+  .filechip .role{flex:0 0 auto;font-size:10.5px;font-weight:800;padding:2px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px}
+  .filechip .role.base{background:var(--accent);color:var(--brand)}
+  .filechip .role.repl{background:var(--teal-tint);color:var(--teal-dark)}
+  .chip-remove{background:none;border:none;color:var(--muted);font-size:17px;line-height:1;padding:2px 5px;cursor:pointer}
+  .chip-remove:hover{color:var(--danger)}
+  .banner{border-radius:9px;padding:10px 13px;font-size:12.5px;font-weight:600;margin-top:12px}
+  .banner.error{background:#fdecec;color:var(--danger);border:1px solid #f3c9c9}
+  .banner.processing{background:var(--accent);color:var(--brand);border:1px solid #cfe0f3}
+  .review-title{font-weight:800;font-size:16px;margin-bottom:4px}
+  .review-sub{color:var(--muted);font-size:12.5px;margin-bottom:16px}
+  .swap-visual{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:18px;flex-wrap:wrap}
+  .pagecard{position:relative;border:1px solid var(--line);border-radius:9px;padding:8px;background:#fff;box-shadow:var(--shadow)}
+  .pagecard canvas{display:block;border-radius:4px}
+  .pagecard .tag{position:absolute;top:-9px;left:8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;background:var(--muted);color:#fff;padding:2px 8px;border-radius:20px}
+  .pagecard .tag.hl{background:var(--teal)}
+  .pagecard.old{opacity:.65}
+  .swap-visual .arrow{font-size:22px;color:var(--muted)}
+  .thumbstrip{display:flex;gap:9px;overflow-x:auto;padding:4px 2px 10px}
+  .thumb{position:relative;flex:0 0 auto;border:1px solid var(--line);border-radius:6px;padding:3px;background:#fff}
+  .thumb.replaced{border-color:var(--teal);box-shadow:0 0 0 2px var(--teal-tint)}
+  .thumb canvas{display:block;border-radius:3px}
+  .thumb .num{position:absolute;bottom:3px;right:4px;font-size:9.5px;font-weight:800;color:#fff;background:rgba(0,0,0,.55);border-radius:3px;padding:0 4px}
+  .summary{font-size:12.5px;color:var(--muted);margin-top:6px}
 
-  .removeline{flex:0 0 auto;align-self:flex-start;background:#fff;border:1px solid var(--line);color:var(--danger);font-weight:700;font-size:12px;padding:9px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
-  .removeline:hover{background:#fdecec;border-color:var(--danger)}
-  @media(max-width:820px){.cardbody{grid-template-columns:1fr}.itemtop{flex-wrap:wrap}}
+  @media(max-width:820px){.itemtop{flex-wrap:wrap}.acchead{flex-wrap:wrap}.sum-due,.sum-docs{display:none}}
   @media(max-width:820px){.grid3{grid-template-columns:1fr}.wrap{padding:0 10px}}
 
   /* ===== PV print template (off-screen) ===== */
@@ -139,61 +226,139 @@
 
 <div class="wrap">
 
-  <div class="panel">
-    <h2>Details</h2>
-    <div class="body grid3">
-      <div>
-        <label for="fName">Name</label>
-        <input type="text" id="fName" placeholder="Enter name">
+  <!-- ===================== PV GENERATOR VIEW ===================== -->
+  <div id="view-pv" class="toolview">
+
+    <!-- Sticky details bar -->
+    <div class="stickybar">
+      <div class="stickyinner">
+        <div class="sfield">
+          <label for="fName">Name</label>
+          <input type="text" id="fName" placeholder="Enter name">
+        </div>
+        <div class="sfield">
+          <label for="fDate">Date</label>
+          <input type="date" id="fDate">
+        </div>
+        <div class="sfield wide">
+          <label for="fSub">Subsidiaries</label>
+          <select id="fSub">
+            <option value="">— Select —</option>
+            <option>Deleum Berhad</option>
+            <option>Deleum Services Sdn Bhd</option>
+            <option>Deleum Oilfield Services Sdn Bhd</option>
+            <option>Turboservices Sdn Bhd</option>
+            <option>Turboservices Overhaul Sdn Bhd</option>
+            <option>Deleum Chemical Sdn Bhd</option>
+            <option>Deleum Technology Solutions Sdn Bhd</option>
+          </select>
+        </div>
+        <div class="stickytotal">
+          <span class="lbl">Total</span>
+          <span class="total-amt" id="totalAmt">RM 0.00</span>
+        </div>
       </div>
-      <div>
-        <label for="fDate">Date</label>
-        <input type="date" id="fDate">
+    </div>
+
+    <div class="panel">
+      <h2>Adjudication Items <span class="dupwarn" id="dupwarn">⚠ duplicate found</span></h2>
+      <div class="body" style="padding-top:8px">
+        <div id="rows"></div>
+        <div class="toolbar" style="margin-top:14px">
+          <button class="btn ghost" id="addRow">+ Add line</button>
+          <button class="btn ghost" id="btnExpandAll">⤢ Expand all</button>
+          <button class="btn ghost" id="btnCollapseAll">⤡ Collapse all</button>
+          <span class="hint" id="lineCount">0 / 50 lines</span>
+        </div>
+        <div class="hint" style="margin-top:6px">Upload all documents for a line at once — each file is sorted automatically. The Adjudication Number and Due Date are read from the letter; the Amount is read from the payment file.</div>
       </div>
-      <div>
-        <label for="fSub">Subsidiaries</label>
-        <select id="fSub">
-          <option value="">— Select —</option>
-          <option>Deleum Berhad</option>
-          <option>Deleum Services Sdn Bhd</option>
-          <option>Deleum Oilfield Services Sdn Bhd</option>
-          <option>Turboservices Sdn Bhd</option>
-          <option>Turboservices Overhaul Sdn Bhd</option>
-          <option>Deleum Chemical Sdn Bhd</option>
-          <option>Deleum Technology Solutions Sdn Bhd</option>
-        </select>
+    </div>
+
+  </div>
+
+  <!-- ===================== PDF PAGE SWAP VIEW ===================== -->
+  <div id="view-swap" class="toolview" style="display:none">
+    <div class="panel">
+      <h2>PDF Page Swap</h2>
+      <div class="body">
+        <p class="swapintro">Add a multi-page PDF and a single scanned page. The scanned page replaces page&nbsp;1 — nothing else changes.</p>
+
+        <!-- STAGE 1: UPLOAD -->
+        <div id="stage-upload">
+          <label class="uploadzone swapzone" id="dropzone">
+            <span class="uploadzone-icon">⬆</span>
+            <span class="uploadzone-title">Drop PDFs here or click to browse</span>
+            <span class="uploadzone-sub">one multi-page PDF + one single scanned page</span>
+            <input type="file" id="fileInput" accept="application/pdf" multiple>
+          </label>
+
+          <div class="filelist" id="filelist" style="display:none;"></div>
+          <div id="uploadError"></div>
+
+          <div class="toolbar" id="uploadActions" style="display:none;margin-top:12px">
+            <button class="btn primary" id="processBtn">Swap page 1</button>
+            <button class="btn ghost" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <!-- STAGE 2: PROCESSING -->
+        <div id="stage-processing" style="display:none;">
+          <div class="banner processing">Processing PDFs in your browser — nothing is uploaded anywhere…</div>
+        </div>
+
+        <!-- STAGE 3: REVIEW -->
+        <div id="stage-review" style="display:none;">
+          <div class="review-title">Page 1 replaced</div>
+          <div class="review-sub" id="reviewSub"></div>
+
+          <div class="swap-visual">
+            <div class="pagecard old" id="oldPagePreview"><div class="tag">old p.1</div></div>
+            <div class="arrow">&#8594;</div>
+            <div class="pagecard" id="newPagePreview"><div class="tag hl">scanned</div></div>
+          </div>
+
+          <div class="thumbstrip" id="thumbstrip"></div>
+          <div class="summary" id="summary"></div>
+
+          <div class="toolbar" style="margin-top:14px">
+            <button class="btn primary" id="downloadBtn">Download combined PDF</button>
+            <button class="btn ghost" id="redoBtn">Start over</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="panel">
-    <h2>Adjudication Items <span class="dupwarn" id="dupwarn">⚠ duplicate found</span></h2>
-    <div class="body" style="padding-top:8px">
-      <div id="rows"></div>
-      <div class="totalbar">
-        <span>Total Amount</span>
-        <span class="total-amt" id="totalAmt">RM 0.00</span>
-      </div>
-      <div class="toolbar" style="margin-top:14px">
-        <button class="btn ghost" id="addRow">+ Add line</button>
-        <button class="btn ghost" id="btnSaveDraft">💾 Save draft</button>
-        <label class="btn ghost" style="position:relative;overflow:hidden">📂 Load draft
-          <input type="file" id="loadDraft" accept="application/json" style="position:absolute;inset:0;opacity:0;cursor:pointer">
-        </label>
-        <span class="hint" id="lineCount">0 / 10 lines</span>
+</div>
 
-      </div>
-      <div class="hint" style="margin-top:6px">Upload a letter → the Adjudication Number is read automatically if it's a PDF. Adjudication Letter, Application, Purchase Order &amp; Payment File are required per line. Additional Documents are optional and support multiple files. Duplicates turn red.</div>
-    </div>
-    <div class="foot">
-      <span class="status" id="status">Ready.</span>
-      <div class="toolbar">
-        <button class="btn ghost" id="btnPreview">👁 Preview PV</button>
-        <button class="btn primary" id="btnGenerate">Generate PV + Documents (single PDF)</button>
-      </div>
-    </div>
+<!-- ===================== FLOATING TOOL SWITCHER ===================== -->
+<div class="toolswitch" id="toolswitch">
+  <button class="switchtoggle" id="switchToggle" title="Switch tool">
+    <span class="switchicon">⇄</span>
+  </button>
+  <div class="switchmenu" id="switchMenu">
+    <button class="switchopt active" data-view="pv">
+      <span class="optIcon">🧾</span>
+      <span class="optText"><b>PV Generator</b><small>Vouchers &amp; supporting docs</small></span>
+    </button>
+    <button class="switchopt" data-view="swap">
+      <span class="optIcon">🔄</span>
+      <span class="optText"><b>PDF Page Swap</b><small>Replace page 1 with a scan</small></span>
+    </button>
   </div>
+</div>
 
+<!-- ===================== FLOATING ACTION BAR (PV view) ===================== -->
+<div class="actionbar" id="actionbar">
+  <span class="status" id="status">Ready.</span>
+  <div class="actionbtns">
+    <button class="btn ghost" id="btnSaveDraft">💾 Save draft</button>
+    <label class="btn ghost filelabel">📂 Load draft
+      <input type="file" id="loadDraft" accept="application/json">
+    </label>
+    <button class="btn ghost" id="btnPreview">👁 Preview PV</button>
+    <button class="btn primary" id="btnGenerate">⚡ Generate ZIP</button>
+  </div>
 </div>
 
 <!-- ===== OFF-SCREEN PV TEMPLATE (rendered to PDF) ===== -->
@@ -365,14 +530,38 @@ function extractAdjudicationNumber(text){
   return (m2 && m2[1]) ? m2[1].trim() : '';
 }
 
-/* DUE DATE EXTRACTION — confirmed pattern from a live letter sample:
-   "Sila jelaskan duti tersebut selewat-lewatnya pada 20/08/2026."
+/* DUE DATE EXTRACTION — two confirmed sources, in priority order:
+   1. The adjudication letter states it outright:
+      "Sila jelaskan duti tersebut selewat-lewatnya pada 20/08/2026."
+   2. The Borang Nyata (application form) gives the date the request
+      was received: "Tarikh Permohonan Diterima : 13/08/2026".
+      The due date is that date + 30 calendar days.
    Returns an ISO yyyy-mm-dd string (for the <input type=date>), or ''. */
 function extractDueDate(text){
+  // 1. explicit due date stated in the letter
   const m = text.match(/selewat[\s\-]*lewatnya\s*pada\s*(\d{2})\/(\d{2})\/(\d{4})/i);
-  if(!m) return '';
-  const [, d, mo, y] = m;
-  return `${y}-${mo}-${d}`;
+  if(m){
+    const [, d, mo, y] = m;
+    return `${y}-${mo}-${d}`;
+  }
+  // 2. received date + 30 days (Borang Nyata). Allow stray characters
+  //    between the words — the DRAFT watermark can break the text up.
+  const m2 = text.match(/Tarikh\s+Permohonan\s+Diterima[\s\S]{0,20}?(\d{2})\/(\d{2})\/(\d{4})/i);
+  if(m2){
+    const [, d, mo, y] = m2;
+    return addDaysISO(`${y}-${mo}-${d}`, 30);
+  }
+  return '';
+}
+
+/* Add N calendar days to an ISO date, returning ISO. Uses UTC so the
+   result can't drift by a day due to local timezone/DST. */
+function addDaysISO(iso, days){
+  const [y,mo,d] = iso.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, mo-1, d));
+  dt.setUTCDate(dt.getUTCDate() + days);
+  const p = n => String(n).padStart(2,'0');
+  return `${dt.getUTCFullYear()}-${p(dt.getUTCMonth()+1)}-${p(dt.getUTCDate())}`;
 }
 
 let rowSeq = 0;
@@ -384,7 +573,8 @@ function fmtRM(n){ return 'RM ' + (Number(n)||0).toLocaleString('en-MY',{minimum
 function fmtNum(n){ return (Number(n)||0).toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function setStatus(msg, cls=''){ const s=$('#status'); s.textContent=msg; s.className='status '+cls; }
 
-const MAX_LINES = 50;
+const MAX_LINES = 50;          // max item lines you can enter in total
+const MAX_LINES_PER_PV = 10;   // max lines that fit on one printed voucher
 
 function addRow(){
   if(state.length >= MAX_LINES){
@@ -405,39 +595,54 @@ function addRow(){
   card.className='itemcard';
   card.dataset.id = id;
   card.innerHTML = `
-    <div class="itemtop">
+    <div class="acchead">
+      <span class="accarrow">▸</span>
       <span class="itemnum">${state.length}</span>
-      <div class="field"><label>Adjudication Number</label><input type="text" class="adj" placeholder="—"></div>
-      <div class="field narrow"><label>Amount (RM)</label><input type="text" class="amt-input amount" inputmode="decimal" placeholder="0.00"></div>
-      <div class="field narrow"><label>Due Date</label><input type="date" class="duedate" title="Due date (auto-read from the letter; required)"></div>
+      <span class="sum-adj">New line</span>
+      <span class="sum-amt">—</span>
+      <span class="sum-due">No due date</span>
+      <span class="sum-docs"><b class="sum-docs-n">0</b>/4 docs</span>
+      <button class="removeline del" title="Remove this line">✕</button>
     </div>
-    <div class="rowmsg fnwarn"></div>
-    <div class="rowmsg duewarn"></div>
-    <div class="cardbody">
-      <div class="doclist">
-        <div class="docslot" data-slot="letter"><span class="docicon">📄</span><span class="doclabel req">Adjudication Letter</span><span class="doc-name letter-name">Not uploaded</span></div>
-        <div class="docslot" data-slot="application"><span class="docicon">📝</span><span class="doclabel req">Application</span><span class="doc-name application-name">Not uploaded</span></div>
-        <div class="docslot" data-slot="po"><span class="docicon">🧾</span><span class="doclabel req">Purchase Order</span><span class="doc-name po-name">Not uploaded</span></div>
-        <div class="docslot" data-slot="payment"><span class="docicon">💳</span><span class="doclabel req">Payment File</span><span class="doc-name payment-name">Not uploaded</span></div>
-        <div class="docslot" data-slot="additional"><span class="docicon">📎</span><span class="doclabel">Additional Documents</span><span class="doc-name additional-list">None</span></div>
+    <div class="accbody">
+      <div class="itemtop">
+        <div class="field"><label>Adjudication Number</label><input type="text" class="adj" placeholder="—"></div>
+        <div class="field narrow"><label>Amount (RM)</label><input type="text" class="amt-input amount" inputmode="decimal" placeholder="0.00"></div>
+        <div class="field narrow"><label>Due Date</label><input type="date" class="duedate" title="Due date (auto-read from the letter; required)"></div>
       </div>
-      <div class="uploadzone-wrap">
-        <label class="uploadzone">
-          <span class="uploadzone-icon">⬆</span>
-          <span class="uploadzone-title">Upload document</span>
-          <span class="uploadzone-sub">(multiple upload)</span>
-          <input type="file" class="combined-input" accept="application/pdf,image/*" multiple>
-        </label>
-      </div>
-      <button class="removeline del" title="Remove this line">✕ Remove line</button>
+      <div class="rowmsg fnwarn"></div>
+      <div class="rowmsg duewarn"></div>
+
+      <label class="uploadstrip">
+        <span class="us-icon">⬆</span>
+        <span class="us-text">Upload documents — select all files for this line at once</span>
+        <span class="us-cta">Browse</span>
+        <input type="file" class="combined-input" accept="application/pdf,image/*" multiple>
+      </label>
+
+      <table class="doctable">
+        <tbody>
+          <tr class="docslot" data-slot="letter"><td class="dt-icon">📄</td><td class="dt-label req">Adjudication Letter</td><td class="dt-name doc-name letter-name">Not uploaded</td></tr>
+          <tr class="docslot" data-slot="application"><td class="dt-icon">📝</td><td class="dt-label req">Application</td><td class="dt-name doc-name application-name">Not uploaded</td></tr>
+          <tr class="docslot" data-slot="po"><td class="dt-icon">🧾</td><td class="dt-label req">Purchase Order</td><td class="dt-name doc-name po-name">Not uploaded</td></tr>
+          <tr class="docslot" data-slot="payment"><td class="dt-icon">💳</td><td class="dt-label req">Payment File</td><td class="dt-name doc-name payment-name">Not uploaded</td></tr>
+          <tr class="docslot" data-slot="additional"><td class="dt-icon">📎</td><td class="dt-label">Additional Documents</td><td class="dt-name doc-name additional-list">None</td></tr>
+        </tbody>
+      </table>
     </div>`;
   rowsEl.appendChild(card);
 
+  // accordion toggle (ignore clicks on the remove button)
+  card.querySelector('.acchead').addEventListener('click', e=>{
+    if(e.target.closest('.removeline')) return;
+    card.classList.toggle('open');
+  });
+
   card.querySelector('.amount').addEventListener('input', e=>{
-    rec.amount = e.target.value.replace(/[^0-9.]/g,''); e.target.value=rec.amount; recalcTotal();
+    rec.amount = e.target.value.replace(/[^0-9.]/g,''); e.target.value=rec.amount; recalcTotal(); updateSummary(card,rec);
   });
   card.querySelector('.adj').addEventListener('input', e=>{
-    rec.adj=e.target.value.trim(); checkDuplicates(); checkFilenameMatch(card,rec);
+    rec.adj=e.target.value.trim(); checkDuplicates(); checkFilenameMatch(card,rec); updateSummary(card,rec);
   });
   card.querySelector('.duedate').addEventListener('change', e=>{
     rec.dueDate = e.target.value; // ISO yyyy-mm-dd, or '' if cleared
@@ -470,16 +675,18 @@ function addRow(){
         } else {
           notes.push('Letter recognized but no number auto-detected — type it in.');
         }
-        if(classified.letter.dueDate){
-          rec.dueDate=classified.letter.dueDate;
-          card.querySelector('.duedate').value=rec.dueDate;
-          notes.push('Due date detected: '+rec.dueDate.split('-').reverse().join('/'));
-        } else {
-          notes.push('No due date auto-detected — please pick it manually.');
-        }
-        updateDueDateWarning(card, rec);
       }
     }
+    // Due date can come from the letter OR the application form
+    // (received date + 30 days) — take whichever was found.
+    if(!rec.dueDate && classified.dueDate){
+      rec.dueDate = classified.dueDate;
+      card.querySelector('.duedate').value = rec.dueDate;
+      notes.push('Due date detected: '+rec.dueDate.split('-').reverse().join('/'));
+    } else if(!rec.dueDate){
+      notes.push('No due date auto-detected — please pick it manually.');
+    }
+    updateDueDateWarning(card, rec);
     if(classified.application){
       rec.applicationFile=classified.application.file; rec.applicationBytes=classified.application.bytes;
       card.querySelector('.application-name').textContent=classified.application.file.name;
@@ -519,14 +726,46 @@ function addRow(){
     const i=state.findIndex(r=>r.id===id); if(i>-1) state.splice(i,1);
     card.remove(); renumber(); recalcTotal(); checkDuplicates(); updateLineCount();
   });
+  card.classList.add('open'); // start expanded so it's ready to edit
   updateDueDateWarning(card, rec);
   updateLineCount();
 }
 
 /* Highlight the card if any mandatory upload is still missing */
+/* Keep the collapsed accordion header in sync with the line's data */
+function updateSummary(card, rec){
+  const adjEl = card.querySelector('.sum-adj');
+  const amtEl = card.querySelector('.sum-amt');
+  const dueEl = card.querySelector('.sum-due');
+  const nEl   = card.querySelector('.sum-docs-n');
+  if(!adjEl) return;
+
+  adjEl.textContent = (rec.adj && rec.adj.trim()) ? rec.adj : 'New line';
+  adjEl.classList.toggle('empty', !(rec.adj && rec.adj.trim()));
+
+  const amt = parseFloat(rec.amount)||0;
+  amtEl.textContent = amt>0 ? ('RM '+fmtNum(amt)) : '—';
+  amtEl.classList.toggle('empty', !(amt>0));
+
+  if(rec.dueDate){
+    const [y,m,d] = rec.dueDate.split('-');
+    dueEl.textContent = `${d}/${m}/${y}`;
+    dueEl.classList.remove('empty','warn');
+  } else {
+    dueEl.textContent = 'No due date';
+    dueEl.classList.add('empty','warn');
+  }
+
+  const n = [rec.letterBytes, rec.applicationBytes, rec.poBytes, rec.paymentBytes].filter(Boolean).length;
+  nEl.textContent = n;
+  const docsEl = card.querySelector('.sum-docs');
+  docsEl.classList.toggle('complete', n===4);
+}
+
 function updateMandatoryHighlight(card, rec){
   const missing = !rec.letterBytes || !rec.applicationBytes || !rec.poBytes || !rec.paymentBytes || !rec.dueDate;
   card.classList.toggle('mandatory-missing', missing);
+  updateSummary(card, rec);
 }
 
 /* Due date is mandatory and NOT auto-fillable from a fallback — flag
@@ -722,7 +961,7 @@ async function readAmountFromPaymentScreenshot(bytes, file){
   const isImage = (file.type||'').startsWith('image/') || /\.(png|jpe?g)$/i.test(file.name||'');
   if(!isPdf && !isImage) return null; // unsupported format — amount stays manual
   if(location.protocol === 'file:'){
-    setStatus('Tip: start the app via "Start_PV_Generator" to auto-read the payment amount. For now, type it manually.','err');
+    setStatus('Automatic amount reading needs the app to be served over http(s). Open it via the "Start_PV_Generator" launcher (or the hosted web link) — for now, please type the amount manually.','err');
     return null;
   }
   try{
@@ -755,7 +994,7 @@ async function readAmountFromPaymentScreenshot(bytes, file){
    First match wins per slot; extra matches for an already-filled slot
    fall through to Additional Documents. */
 async function classifyFiles(files){
-  const result = {letter:null, application:null, po:null, payment:null, additional:[]};
+  const result = {letter:null, application:null, po:null, payment:null, additional:[], dueDate:null};
   for(const f of files){
     const nameLower = f.name.toLowerCase();
     const bytes = new Uint8Array(await f.arrayBuffer());
@@ -765,6 +1004,15 @@ async function classifyFiles(files){
 
     if(nameLower.includes('permohonan')){
       category='application';
+      // the application form may still carry the received date that
+      // the due date is calculated from — read it if we can
+      if((f.type==='application/pdf') || /\.pdf$/i.test(f.name)){
+        try{
+          const text = await readPdfText(bytes.slice());
+          const d = extractDueDate(text);
+          if(d && !result.dueDate) result.dueDate = d;
+        }catch(e){ /* unreadable — ignore */ }
+      }
     } else if(nameLower.includes('payment')){
       category='payment';
     } else {
@@ -776,6 +1024,7 @@ async function classifyFiles(files){
             category='letter';
             adjNumber = extractAdjudicationNumber(text);
             dueDate = extractDueDate(text); // '' if not found — filename fallback below can't recover a date
+            if(dueDate && !result.dueDate) result.dueDate = dueDate;
           }
         }catch(e){ /* unreadable PDF — fall through to other checks */ }
       }
@@ -1018,18 +1267,14 @@ function combinedFilenameFor(totalAmount){
   const sub = safeName($('#fSub').value) || 'Voucher';
   return `PV - (${sub}) - Supporting Document (RM ${fmtNum(totalAmount)}).pdf`;
 }
-/* Plain-text list of adjudication numbers included in this due-date's PV */
-function adjudicationListText(ddmmyyyy, rows, totalAmount){
-  const sub = $('#fSub').value || '';
-  const lines = [];
-  lines.push('Payment Voucher — Adjudication Number List');
-  lines.push('Subsidiary : '+sub);
-  lines.push('Due Date   : '+ddmmyyyy);
-  lines.push('Total Amount : RM '+fmtNum(totalAmount));
-  lines.push('');
-  lines.push('Adjudication Numbers ('+rows.length+'):');
-  rows.forEach((r,i)=> lines.push((i+1)+'. '+(r.adj||'(no number)')+'  —  RM '+fmtNum(parseFloat(r.amount)||0)));
-  return lines.join('\r\n');
+/* Plain-text list for this PV: adjudication numbers ONLY, one per
+   line, no numbering, no amounts, no headers — the file is meant to
+   be pasted straight into other systems. */
+function adjudicationListText(rows){
+  return rows
+    .map(r => (r.adj||'').trim())
+    .filter(a => a.length > 0)
+    .join('\r\n');
 }
 
 /* Build one due-date group's PV (1 page) + Combined PDF (separator +
@@ -1086,19 +1331,33 @@ async function generateAll(){
     });
     const sortedDates = [...groups.keys()].sort(); // chronological, ISO sorts correctly
 
-    const zip = new JSZip();
-    let done=0;
-    for(const iso of sortedDates){
+    // A voucher's table only has room for 10 lines, so each due date is
+    // split into as many PVs as needed: lines 1-10, 11-20, 21-30, …
+    // Line 11 never appears on the same PV as lines 1-10.
+    const jobs = []; // {ddmmyyyy, rows, pvIndex, pvCount}
+    sortedDates.forEach(iso=>{
       const rows = groups.get(iso);
       const [y,m,d] = iso.split('-');
       const ddmmyyyy = `${d}-${m}-${y}`;
-      setStatus(`Building ${ddmmyyyy} (${++done}/${sortedDates.length}) …`,'busy');
-      const {pvBytes, combinedBytes} = await buildGroupDocuments(rows);
-      const totalAmount = rows.reduce((s,r)=> s+(parseFloat(r.amount)||0),0);
-      const folder = zip.folder(ddmmyyyy);
+      const chunks = [];
+      for(let i=0;i<rows.length;i+=MAX_LINES_PER_PV) chunks.push(rows.slice(i, i+MAX_LINES_PER_PV));
+      chunks.forEach((chunk,i)=> jobs.push({ddmmyyyy, rows:chunk, pvIndex:i+1, pvCount:chunks.length}));
+    });
+
+    const zip = new JSZip();
+    let done=0;
+    for(const job of jobs){
+      const label = job.pvCount>1 ? `${job.ddmmyyyy} (PV ${job.pvIndex}/${job.pvCount})` : job.ddmmyyyy;
+      setStatus(`Building ${label} — ${++done}/${jobs.length} …`,'busy');
+      const {pvBytes, combinedBytes} = await buildGroupDocuments(job.rows);
+      const totalAmount = job.rows.reduce((s,r)=> s+(parseFloat(r.amount)||0),0);
+      // one folder per due date; if that date needed splitting, each PV
+      // gets its own subfolder so its documents stay together
+      let folder = zip.folder(job.ddmmyyyy);
+      if(job.pvCount>1) folder = folder.folder(`PV ${job.pvIndex} of ${job.pvCount}`);
       folder.file(pvFilenameFor(), pvBytes);
       folder.file(combinedFilenameFor(totalAmount), combinedBytes);
-      folder.file('Adjudication_Numbers.txt', adjudicationListText(ddmmyyyy, rows, totalAmount));
+      folder.file('Adjudication_Numbers.txt', adjudicationListText(job.rows));
     }
 
     setStatus('Packaging ZIP …','busy');
@@ -1106,7 +1365,7 @@ async function generateAll(){
     const url = URL.createObjectURL(zipBlob);
     const a=document.createElement('a'); a.href=url; a.download=batchZipFilename(); a.click();
     URL.revokeObjectURL(url);
-    setStatus(`Done — ${sortedDates.length} due-date folder(s) saved in `+batchZipFilename());
+    setStatus(`Done — ${jobs.length} voucher(s) across ${sortedDates.length} due date(s) in `+batchZipFilename());
   }catch(err){
     console.error(err); setStatus('Error: '+err.message,'err');
   }finally{
@@ -1186,17 +1445,248 @@ function rememberName(){ try{ localStorage.setItem('pv_prep_name', $('#fName').v
 function restoreName(){ try{ const n=localStorage.getItem('pv_prep_name'); if(n) $('#fName').value=n; }catch(e){} }
 
 
-/* ---------- WIRE UP ---------- */
+/* ---------- WIRE UP (PV Generator) ---------- */
 $('#addRow').addEventListener('click', ()=> addRow());
 $('#btnGenerate').addEventListener('click', generateAll);
 $('#btnSaveDraft').addEventListener('click', saveDraft);
 $('#loadDraft').addEventListener('change', e=>{ if(e.target.files[0]) loadDraft(e.target.files[0]); });
 $('#btnPreview').addEventListener('click', openPvPreview);
 $('#fName').addEventListener('input', rememberName);
+$('#btnExpandAll').addEventListener('click', ()=> [...rowsEl.children].forEach(c=>c.classList.add('open')));
+$('#btnCollapseAll').addEventListener('click', ()=> [...rowsEl.children].forEach(c=>c.classList.remove('open')));
 
 restoreName();
 for(let i=0;i<5;i++) addRow();
 $('#fDate').valueAsDate = new Date();
+
+
+/* ================================================================
+   FLOATING TOOL SWITCHER — swaps between the two tools
+   ================================================================ */
+const toolswitch = $('#toolswitch');
+$('#switchToggle').addEventListener('click', e=>{
+  e.stopPropagation();
+  toolswitch.classList.toggle('open');
+});
+document.addEventListener('click', e=>{
+  if(!toolswitch.contains(e.target)) toolswitch.classList.remove('open');
+});
+document.querySelectorAll('.switchopt').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const view = btn.dataset.view;
+    document.querySelectorAll('.switchopt').forEach(b=>b.classList.toggle('active', b===btn));
+    $('#view-pv').style.display   = (view==='pv')   ? '' : 'none';
+    $('#view-swap').style.display = (view==='swap') ? '' : 'none';
+    // the action bar belongs to the PV tool only
+    $('#actionbar').style.display = (view==='pv') ? '' : 'none';
+    document.body.style.paddingBottom = (view==='pv') ? '74px' : '20px';
+    toolswitch.classList.remove('open');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+
+/* ================================================================
+   PDF PAGE SWAP — replaces page 1 of a multi-page PDF with a
+   single-page scanned copy. Runs fully offline using the same
+   bundled pdf-lib / pdf.js as the PV generator.
+   ================================================================ */
+(function(){
+  const dropzone      = $('#dropzone');
+  const fileInput     = $('#fileInput');
+  const filelistEl    = $('#filelist');
+  const uploadActions = $('#uploadActions');
+  const uploadError   = $('#uploadError');
+  const processBtn    = $('#processBtn');
+  const clearBtn      = $('#clearBtn');
+  const redoBtn       = $('#redoBtn');
+  const downloadBtn   = $('#downloadBtn');
+  const stageUpload     = $('#stage-upload');
+  const stageProcessing = $('#stage-processing');
+  const stageReview     = $('#stage-review');
+
+  let selectedFiles = []; // {file, bytes, pageCount}
+  let combinedBytes = null;
+  let baseFileName  = null;
+
+  function resetAll(){
+    selectedFiles = []; combinedBytes = null; baseFileName = null;
+    filelistEl.style.display='none'; filelistEl.innerHTML='';
+    uploadActions.style.display='none';
+    uploadError.innerHTML='';
+    fileInput.value='';
+    stageUpload.style.display='block';
+    stageProcessing.style.display='none';
+    stageReview.style.display='none';
+  }
+  function showError(msg){ uploadError.innerHTML = `<div class="banner error">${msg}</div>`; }
+
+  ['dragenter','dragover'].forEach(evt=>{
+    dropzone.addEventListener(evt, e=>{ e.preventDefault(); dropzone.classList.add('drag'); });
+  });
+  ['dragleave','drop'].forEach(evt=>{
+    dropzone.addEventListener(evt, e=>{ e.preventDefault(); dropzone.classList.remove('drag'); });
+  });
+  dropzone.addEventListener('drop', e=> handleFiles(e.dataTransfer.files));
+  fileInput.addEventListener('change', e=> handleFiles(e.target.files));
+
+  async function handleFiles(fileListRaw){
+    uploadError.innerHTML='';
+    const incoming = Array.from(fileListRaw).filter(f => f.type==='application/pdf' || f.name.toLowerCase().endsWith('.pdf'));
+    if(incoming.length===0){ showError('No PDF files detected. Please select a PDF file.'); fileInput.value=''; return; }
+
+    const room = 2 - selectedFiles.length;
+    if(room<=0){ showError('You already have 2 files selected. Remove one below, or click Clear to start over.'); fileInput.value=''; return; }
+
+    const toAdd = incoming.slice(0, room);
+    if(incoming.length > room){
+      showError(`Only added ${room} file${room===1?'':'s'} — 2 files is the max. Remove one below if you need to swap it.`);
+    }
+    for(const file of toAdd){
+      try{
+        const bytes = await file.arrayBuffer();
+        const doc = await PDFLib.PDFDocument.load(bytes, {ignoreEncryption:true});
+        selectedFiles.push({file, bytes, pageCount: doc.getPageCount()});
+      }catch(err){
+        showError(`Couldn't read "${file.name}" — it may be corrupted or password-protected.`);
+      }
+    }
+    fileInput.value='';
+    renderFileList();
+    if(selectedFiles.length===2) validateAndEnable();
+    else uploadActions.style.display='none';
+  }
+
+  function removeFile(index){
+    selectedFiles.splice(index,1);
+    uploadError.innerHTML=''; uploadActions.style.display='none';
+    renderFileList();
+  }
+
+  function renderFileList(){
+    if(selectedFiles.length===0){ filelistEl.style.display='none'; filelistEl.innerHTML=''; return; }
+    filelistEl.style.display='flex';
+    filelistEl.innerHTML='';
+    selectedFiles.forEach((sf,i)=>{
+      const chip=document.createElement('div');
+      chip.className='filechip';
+      chip.innerHTML = `<span class="name"></span>
+        <span class="pages">${sf.pageCount} page${sf.pageCount===1?'':'s'}</span>
+        <button type="button" class="chip-remove" data-index="${i}" title="Remove">&times;</button>`;
+      chip.querySelector('.name').textContent = sf.file.name;
+      filelistEl.appendChild(chip);
+    });
+    filelistEl.querySelectorAll('.chip-remove').forEach(btn=>{
+      btn.addEventListener('click', ()=> removeFile(parseInt(btn.dataset.index,10)));
+    });
+    if(selectedFiles.length===1){
+      uploadError.innerHTML = `<div class="banner processing">1 of 2 files added — upload the second file to continue.</div>`;
+    }
+  }
+
+  function validateAndEnable(){
+    const single = selectedFiles.filter(f=>f.pageCount===1);
+    const multi  = selectedFiles.filter(f=>f.pageCount>1);
+    if(single.length===1 && multi.length===1){
+      const chips = filelistEl.querySelectorAll('.filechip');
+      selectedFiles.forEach((sf,i)=>{
+        const role=document.createElement('span');
+        role.className='role '+(sf.pageCount===1?'repl':'base');
+        role.textContent = sf.pageCount===1 ? 'scanned replacement' : 'multi-page base';
+        chips[i].appendChild(role);
+      });
+      uploadActions.style.display='flex';
+    } else if(single.length===0){
+      showError(`Couldn't tell which file is the scanned replacement — both files have more than one page (${selectedFiles.map(f=>f.pageCount).join(' and ')}). The replacement page must be a single-page PDF.`);
+    } else if(single.length===2){
+      showError(`Both files are single-page PDFs, so I can't tell which one is the multi-page document to insert into. Please upload one multi-page PDF and one single-page scanned PDF.`);
+    }
+  }
+
+  clearBtn.addEventListener('click', resetAll);
+  redoBtn.addEventListener('click', resetAll);
+
+  processBtn.addEventListener('click', async ()=>{
+    stageUpload.style.display='none';
+    stageProcessing.style.display='block';
+    const base = selectedFiles.find(f=>f.pageCount>1);
+    const repl = selectedFiles.find(f=>f.pageCount===1);
+    baseFileName = base.file.name;
+    try{
+      const baseDoc = await PDFLib.PDFDocument.load(base.bytes, {ignoreEncryption:true});
+      const replDoc = await PDFLib.PDFDocument.load(repl.bytes, {ignoreEncryption:true});
+      const newDoc  = await PDFLib.PDFDocument.create();
+      const [replPage] = await newDoc.copyPages(replDoc,[0]);
+      newDoc.addPage(replPage);
+      const remaining = baseDoc.getPageIndices().slice(1);
+      const basePages = await newDoc.copyPages(baseDoc, remaining);
+      basePages.forEach(p=>newDoc.addPage(p));
+      combinedBytes = await newDoc.save();
+      await renderReview(base, repl);
+    }catch(err){
+      stageProcessing.style.display='none';
+      stageUpload.style.display='block';
+      showError('Something went wrong while merging the PDFs: '+err.message);
+    }
+  });
+
+  async function renderPdfPageToCanvas(bytes, pageIndex, canvas, maxWidth){
+    const pdf = await pdfjsLib.getDocument({data: bytes.slice(0)}).promise;
+    const page = await pdf.getPage(pageIndex+1);
+    const viewport = page.getViewport({scale:1});
+    const scale = maxWidth / viewport.width;
+    const sv = page.getViewport({scale});
+    canvas.width = sv.width; canvas.height = sv.height;
+    await page.render({canvasContext: canvas.getContext('2d'), viewport: sv}).promise;
+  }
+
+  async function renderReview(base, repl){
+    stageProcessing.style.display='none';
+    stageReview.style.display='block';
+    $('#reviewSub').textContent = `Original page 1 of "${base.file.name}" was replaced with "${repl.file.name}".`;
+
+    const oldPrev = $('#oldPagePreview'); const newPrev = $('#newPagePreview');
+    oldPrev.querySelectorAll('canvas').forEach(c=>c.remove());
+    newPrev.querySelectorAll('canvas').forEach(c=>c.remove());
+
+    const oldCanvas=document.createElement('canvas');
+    await renderPdfPageToCanvas(base.bytes, 0, oldCanvas, 118);
+    oldPrev.prepend(oldCanvas);
+
+    const newCanvas=document.createElement('canvas');
+    await renderPdfPageToCanvas(repl.bytes, 0, newCanvas, 118);
+    newPrev.prepend(newCanvas);
+
+    const thumbstrip = $('#thumbstrip');
+    thumbstrip.innerHTML='';
+    const combinedDoc = await pdfjsLib.getDocument({data: combinedBytes.slice(0)}).promise;
+    const totalPages = combinedDoc.numPages;
+    for(let i=0;i<totalPages;i++){
+      const wrap=document.createElement('div');
+      wrap.className='thumb'+(i===0?' replaced':'');
+      const num=document.createElement('div'); num.className='num'; num.textContent=i+1;
+      const canvas=document.createElement('canvas');
+      wrap.appendChild(canvas); wrap.appendChild(num); thumbstrip.appendChild(wrap);
+      const page=await combinedDoc.getPage(i+1);
+      const viewport=page.getViewport({scale:1});
+      const scale=60/viewport.width;
+      const sv=page.getViewport({scale});
+      canvas.width=sv.width; canvas.height=sv.height;
+      await page.render({canvasContext:canvas.getContext('2d'), viewport:sv}).promise;
+    }
+    $('#summary').innerHTML = `Combined PDF has <b>${totalPages} page${totalPages===1?'':'s'}</b>. Page 1 is highlighted below.`;
+  }
+
+  downloadBtn.addEventListener('click', ()=>{
+    if(!combinedBytes) return;
+    const blob=new Blob([combinedBytes],{type:'application/pdf'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=baseFileName||'combined.pdf';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+})();
 </script>
 </body>
 </html>
